@@ -13,9 +13,6 @@ if SHIELD_SPLIT_KB_LEFT || SHIELD_SPLIT_KB_RIGHT
 config ZMK_SPLIT
     default y
 
-config ZMK_USB
-    default y
-
 config ZMK_BLE
     default y
 
