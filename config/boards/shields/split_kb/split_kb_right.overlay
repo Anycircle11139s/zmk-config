@@ -1,0 +1,48 @@
+/*
+ * Split KB — Right Half (Peripheral)
+ * Same physical pin assignments as left half (U2 mirrors U1).
+ */
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+    };
+
+    right_encoder: encoder_right {
+        compatible = "alps,ec11";
+        label = "RIGHT_ENCODER";
+        a-gpios = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        resolution = <4>;
+        status = "okay";
+    };
+
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&right_encoder>;
+        triggers-per-rotation = <20>;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
+        diode-direction = "col2row";
+
+        col-gpios
+            = <&gpio0 17 GPIO_ACTIVE_HIGH>
+            , <&gpio0 20 GPIO_ACTIVE_HIGH>
+            , <&gpio0 22 GPIO_ACTIVE_HIGH>
+            , <&gpio0 24 GPIO_ACTIVE_HIGH>
+            , <&gpio1  0 GPIO_ACTIVE_HIGH>
+            , <&gpio0 11 GPIO_ACTIVE_HIGH>
+            ;
+
+        row-gpios
+            = <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&gpio0  2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            ;
+    };
+};
