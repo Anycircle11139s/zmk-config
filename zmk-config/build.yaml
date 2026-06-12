@@ -1,6 +1,0 @@
----
-include:
-  - board: nice_nano_v2
-    shield: split_kb_left
-  - board: nice_nano_v2
-    shield: split_kb_right

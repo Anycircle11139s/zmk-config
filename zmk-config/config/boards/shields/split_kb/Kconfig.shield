@@ -1,5 +1,0 @@
-config SHIELD_SPLIT_KB_LEFT
-    def_bool $(shields_list_contains,split_kb_left)
-
-config SHIELD_SPLIT_KB_RIGHT
-    def_bool $(shields_list_contains,split_kb_right)
