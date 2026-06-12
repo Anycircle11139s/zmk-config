@@ -1,0 +1,60 @@
+/*
+ * Split KB - Right Half (Peripheral)
+ * Board: nice!nano v2 (nRF52840)
+ *
+ * ⚠️  Same pin-verification warning applies — check your traces in KiCad.
+ *
+ * The right nice!nano uses identical physical pin assignments to the left.
+ * The matrix transform lives only on the central (left) side.
+ * This overlay just defines the right half's kscan and encoder.
+ *
+ * Pin mapping — same as left:
+ *   ROW0–ROW4: P0.31, P0.29, P0.02, P1.15, P1.13
+ *   COL0–COL5: P0.22, P0.24, P1.00, P0.11, P1.04, P1.06
+ *   Encoder A: P1.11   Encoder B: P0.09
+ */
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+    };
+
+    /* Right rotary encoder (SW58 in schematic) */
+    right_encoder: encoder_right {
+        compatible = "alps,ec11";
+        label = "RIGHT_ENCODER";
+        a-gpios = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  /* Encoder_A → P1.11 */
+        b-gpios = <&gpio0 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  /* Encoder B → P0.09 */
+        resolution = <4>;
+        status = "okay";
+    };
+
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&right_encoder>;
+        triggers-per-rotation = <20>;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
+        diode-direction = "col2row";
+
+        col-gpios
+            = <&gpio0 22 GPIO_ACTIVE_HIGH>   /* COL0 → P0.22 */
+            , <&gpio0 24 GPIO_ACTIVE_HIGH>   /* COL1 → P0.24 */
+            , <&gpio1  0 GPIO_ACTIVE_HIGH>   /* COL2 → P1.00 */
+            , <&gpio0 11 GPIO_ACTIVE_HIGH>   /* COL3 → P0.11 */
+            , <&gpio1  4 GPIO_ACTIVE_HIGH>   /* COL4 → P1.04 */
+            , <&gpio1  6 GPIO_ACTIVE_HIGH>   /* COL5 → P1.06 */
+            ;
+
+        row-gpios
+            = <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW0 → P0.31 */
+            , <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW1 → P0.29 */
+            , <&gpio0  2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW2 → P0.02 */
+            , <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW3 → P1.15 */
+            , <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW4 → P1.13 */
+            ;
+    };
+};
